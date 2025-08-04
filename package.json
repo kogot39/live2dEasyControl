@@ -1,12 +1,9 @@
 {
   "name": "live2d-easy-control",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "更简单更随心所欲地操控Live2D模型",
   "type": "module",
-  "main": "./src/autoLoad.ts",
-  "files": [
-    "dist"
-  ],
+  "main": "./autoLoad.ts",
   "scripts": {
     "dev": "vite",
     "start": "vite",
