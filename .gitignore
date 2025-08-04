@@ -1,0 +1,8 @@
+/node_modules/  
+/dist/  
+/.vscode/
+/Core/
+/Framework/
+/public/
+
+/package-lock.json

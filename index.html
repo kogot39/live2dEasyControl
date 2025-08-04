@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TypeScript HTML App</title>
+  <!-- <script src = "https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js" async></script> -->
+</head>
+<body>
+  <!-- Live2DCubismCore script
+  <script src = "./Core/live2dcubismcore.js"></script> -->
+  <script type="module" src="./autoLoad.ts"></script>
+  <script type="module">
+    import { load , setMessage,Motions,Expressions } from './autoLoad';
+    load('./default.json');
+    setTimeout(function () {
+      setMessage('Hello World!');
+      console.log(Motions);
+      console.log(Expressions);
+    }, 1000);
+  </script>
+</body>
+</html>

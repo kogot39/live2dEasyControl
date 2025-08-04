@@ -1,0 +1,28 @@
+#live2dMessageBox-content {
+    background-color: #706561;
+    color: white;
+    padding: 10px;
+    height: fit-content;
+    border-radius: .7em;
+    word-break: break-all;
+    border-right: 1px solid transparent;
+    position: fixed; 
+    padding-bottom: 10px; 
+    z-index: 9999; 
+    display: absolute; 
+    justify-content: center;
+}
+
+.live2dMessageBox-content-hidden {
+    opacity: 0;
+    -webkit-transition: all 0.5s ease-in;
+    -moz-transition: all 0.5s ease-in;
+    transition: all 0.5s ease-in;
+}
+
+.live2dMessageBox-content-visible {
+    opacity: 1;
+    -webkit-transition: all 0.5s ease-out;
+    -moz-transition: all 0.5s ease-out;
+    transition: all 0.5s ease-out;
+}

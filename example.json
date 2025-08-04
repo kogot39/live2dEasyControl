@@ -1,0 +1,17 @@
+{
+    "canvasWidth": "15vw",
+    "canvasHeight": "40vw",
+    "canvasPosition": "right",
+    "modelDir": "whitecat",
+    "resourcesPath": "/Resources/",
+    "motionGroupIdle": "Idle",
+    "motionGroupTapBody": "TapBody",
+    "hitAreaNameHead": "Head",
+    "hitAreaNameBody": "Body",
+    "expressionNames": {
+        "default": ""
+    },
+    "motionNames": {
+        "default": { "group": "", "no": -1 ,"priority": 0}
+    }
+}
