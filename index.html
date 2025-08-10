@@ -11,13 +11,9 @@
   <script src = "./Core/live2dcubismcore.js"></script> -->
   <script type="module" src="./autoLoad.ts"></script>
   <script type="module">
-    import { load , setMessage,Motions,Expressions } from './autoLoad';
+    import { load , setMessage } from './autoLoad';
     load('./default.json');
-    setTimeout(function () {
-      setMessage('Hello World!');
-      console.log(Motions);
-      console.log(Expressions);
-    }, 1000);
+    setMessage('Hello World!');
   </script>
 </body>
 </html>

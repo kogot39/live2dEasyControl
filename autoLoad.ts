@@ -25,57 +25,84 @@ const loadCubismCode = (): Promise<void> => {
 
 const live2dRender = new Live2dRender();
 const live2dControl = new Live2dControl();
+let isloading = true;
+
+const hadloaded = (): Promise<void> => {
+  return new Promise((resolve) => {
+    const check = () => {
+      if (!isloading) {
+        resolve();
+      } else {
+        setTimeout(check, 10); // 每10毫秒检查一次
+      }
+    };
+    check();
+  });
+};
 
 // 要导出函数
-const setPointMovedEvent = () => {
+const setPointMovedEvent = async () => {
+  await hadloaded();
   live2dControl.setPointMovedEvent();
 };
 
-const removePointMovedEvent = () => {
+const removePointMovedEvent = async () => {
+  await hadloaded();
   live2dControl.removePointMovedEvent();
 };
 
-const setPointClickEvent = () => {
+const setPointClickEvent = async () => {
+  await hadloaded();
   live2dControl.setPointClickEvent();
 };
 
- const removePointClickEvent = () => {
+const removePointClickEvent = async () => {
+  await hadloaded();
   live2dControl.removePointClickEvent();
 };
 
-const getAllMotionsInfo = () => {
+const getAllMotionsInfo = async () => {
+  await hadloaded();
   return live2dControl.getAllMotionsInfo();
 };
 
-const getAllExpressionsInfo = () => {
+const getAllExpressionsInfo = async () => {
+  await hadloaded();
   return live2dControl.getAllExpressionsInfo();
 };
 
-const playMotion = (group: string, no: number, priority: number) => {
+const playMotion = async (group: string, no: number, priority: number) => {
+  await hadloaded();
   live2dControl.playMotion(group, no, priority);
 };
 
-const playExpression = (name: string) => {
+const playExpression = async (name: string) => {
+  await hadloaded();
   live2dControl.playExpression(name);
 };
 
-const reSetDefaultExpression = () => {
+const reSetDefaultExpression = async () => {
+  await hadloaded();
   live2dControl.reSetDefaultExpression();
 };
 
-const setAngle = (e: MouseEvent, duration: number = null) => {
+const setAngle = async (e: MouseEvent, duration: number = null) => {
+  await hadloaded();
   live2dControl.setAngle(e, duration);
 };
 
-const setMessage = (message: string, duration: number = null) => {
+const setMessage = async (message: string, duration: number = null) => {
+  await hadloaded();
   live2dControl.setMessage(message, duration);
 };
 
-const hideMessageBox = () => {
+const hideMessageBox = async () => {
+  await hadloaded();
   live2dControl.hideMessageBox();
 };
 
-const stop = () => {
+const stop = async () => {
+  await hadloaded();
   live2dRender.stop();
 };
 
@@ -133,6 +160,10 @@ const load = async (configPath: string | Object): Promise<void> => {
 
     // 加载Live2D模型
     live2dRender.showLive2d();
+
+    // 完成加载
+    isloading = false;
+
 
     // 页面加载完成后开始渲染Live2D模型
     // window.addEventListener(
