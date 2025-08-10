@@ -21,7 +21,7 @@ export class Live2dRender {
     /**
      * 初始化
      */
-    public init(viewManager: viewManager, model: Model): void {
+    public async init(viewManager: viewManager, model: Model): Promise<void> {
         this._isShow = false;
 
         this._viewManager = viewManager;
@@ -36,6 +36,9 @@ export class Live2dRender {
                 this.resizeObserverCallback.call(this, entries, observer)
         );
         this._resizeObserver.observe(this._viewManager.getCanvas());
+
+        // 等待模型加载完成
+        await this.waiting()
     }
 
     public release(): void {
@@ -43,6 +46,19 @@ export class Live2dRender {
         this._programId = null;
         this._model = null;
         this._viewManager = null;
+    }
+
+    private waiting(): Promise<void> {
+        return new Promise((resolve) => {
+            const check = () => {
+                if (this._model.getLoadState()) {
+                    resolve();
+                } else {
+                    setTimeout(check, 10);
+                }
+            };
+            check();
+        });
     }
 
     /**

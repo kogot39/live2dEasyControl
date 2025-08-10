@@ -11,9 +11,11 @@
   <script src = "./Core/live2dcubismcore.js"></script> -->
   <script type="module" src="./autoLoad.ts"></script>
   <script type="module">
-    import { load , setMessage } from './autoLoad';
+    import { load , setMessage, getAllExpressionsInfo,playExpression } from './autoLoad';
     load('./default.json');
     setMessage('Hello World!');
+    console.log(getAllExpressionsInfo());
+    playExpression("sing.exp3.json");
   </script>
 </body>
 </html>

@@ -100,7 +100,6 @@ export class Model extends CubismUserModel {
     _motionCount: number; // 运动数据计数
     _allMotionCount: number; // 运动总数
     _consistency: boolean; // MOC3整合性检查管理用
-    _isLoadFinish: boolean; // 加载完成标志
 
     /**
      * 构造函数。
@@ -178,9 +177,14 @@ export class Model extends CubismUserModel {
         this._expressions.clear();
     }
 
+    public getLoadState(): boolean {
+        if(this._state == LoadStep.CompleteSetup) return true;
+        return false;
+    }
+
     public getAllMotions(): {group:string,names:string[]}[] | null {
 
-        if(!this._isLoadFinish || !this._modelSetting) {
+        if(this._state != LoadStep.CompleteSetup || !this._modelSetting) {
             return null; // 模型未加载完成，返回null
         }
 
@@ -203,7 +207,7 @@ export class Model extends CubismUserModel {
     }
 
     public getAllExpressions(): string[] | null {
-        if(!this._isLoadFinish|| !this._modelSetting) {
+        if(this._state != LoadStep.CompleteSetup|| !this._modelSetting) {
             return null; // 模型未加载完成，返回null
         }
 
@@ -238,9 +242,6 @@ export class Model extends CubismUserModel {
 
                 // 保存结果
                 this.setupModel(setting);
-
-                // 加载完成
-                this._isLoadFinish = true;
             })
             .catch(error => {
                 // 读取model3.json时出错时，绘制不可能，因此不setup并catch错误

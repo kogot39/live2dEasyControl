@@ -25,7 +25,7 @@ export class Live2dControl {
     /**
      * 初始化
      */
-    public init(viewManager: viewManager, model: Model): void {
+    public async init(viewManager: viewManager, model: Model): Promise<void> {
         this._model = model;
         this._viewManager = viewManager;
         this._touch = new Touch();
@@ -35,12 +35,28 @@ export class Live2dControl {
 
         // 初始化对话框
         this.initMessageBox();
+
+        // 等待模型加载完成
+        await this.waiting()
     }
 
     public release(): void {
         // 移除所有监听事件
         this.removePointClickEvent();
         this.removePointMovedEvent();
+    }
+
+    private waiting(): Promise<void> {
+        return new Promise((resolve) => {
+            const check = () => {
+                if (this._model.getLoadState()) {
+                    resolve();
+                } else {
+                    setTimeout(check, 10);
+                }
+            };
+            check();
+        });
     }
 
     /**

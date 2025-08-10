@@ -155,8 +155,8 @@ const load = async (configPath: string | Object): Promise<void> => {
     const _model = new Model(_viewManager);
 
     // 初始化live2dRender和live2dControl 可操作的对象
-    live2dRender.init(_viewManager, _model);
-    live2dControl.init(_viewManager, _model);
+    await live2dRender.init(_viewManager, _model);
+    await live2dControl.init(_viewManager, _model);
 
     // 加载Live2D模型
     live2dRender.showLive2d();
