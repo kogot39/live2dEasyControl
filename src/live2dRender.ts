@@ -230,10 +230,11 @@ export class Live2dRender {
     }
 
     /**
-     * 停止模型渲染
+     * 停止模型渲染并隐藏
      */
     public stop(): void {
         this._isShow = false;
+        this._viewManager.getCanvas().style.display = 'none';
     }
 
     /**

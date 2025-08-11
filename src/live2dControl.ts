@@ -66,7 +66,7 @@ export class Live2dControl {
         if (!this.hasPointMovedEventListener) {
             this.hasPointMovedEventListener = true;
             this.pointMovedEventListener = this.onPointerMoved.bind(this);
-            document.addEventListener('pointermove', this.pointMovedEventListener, { passive: true });
+            this._viewManager.getCanvas().addEventListener('pointermove', this.pointMovedEventListener, { passive: true });
         }
     }
 
@@ -76,7 +76,7 @@ export class Live2dControl {
     public removePointMovedEvent(): void {
         if (this.hasPointMovedEventListener) {
             this.hasPointMovedEventListener = false;
-            document.removeEventListener('pointermove', this.pointMovedEventListener);
+            this._viewManager.getCanvas().removeEventListener('pointermove', this.pointMovedEventListener);
         }
     }
 
@@ -119,11 +119,6 @@ export class Live2dControl {
         this._touch.touchesMoved(localX, localY);
 
         this._model.setDragging(viewX, viewY);
-
-        // 避免捕获过于频繁每次执行有0.01s冷却
-        // setTimeout(() => {
-        //     this._model.setDragging(viewX, viewY);
-        // }, 100);
     }
 
     /**
@@ -226,11 +221,6 @@ export class Live2dControl {
      * @param duration 持续时间
      */
     public setAngle(e: MouseEvent, duration: number = null): void {
-        // 与鼠标移动事件不能同时设置
-        if (this.hasPointMovedEventListener) {
-            Utils.printMessage('[APP]与鼠标移动事件不能同时设置');
-            return;
-        }
         const element = e.target as HTMLElement;
 
         const localX: number = (e.pageX - element.offsetLeft) * window.devicePixelRatio;
@@ -248,6 +238,38 @@ export class Live2dControl {
                 this._model.setDragging(0.0, 0.0);
             }, duration);
         }
+    }
+
+    /**
+     * 设置模型朝向 点击的元素和点击位置
+     * @param X 屏幕的X坐标
+     * @param Y 屏幕的Y坐标
+     * @param duration 持续时间
+     */
+    public setAngleXY(X: number,Y: number, duration: number = null): void {
+
+        const localX: number = Y * window.devicePixelRatio;
+        const localY: number = X * window.devicePixelRatio;
+
+        const viewX: number = this._viewManager.transformViewX(this._touch.getX());
+        const viewY: number = this._viewManager.transformViewY(this._touch.getY());
+
+        this._touch.touchesMoved(localX, localY);
+
+        this._model.setDragging(viewX, viewY);
+
+        if (duration) {
+            setTimeout(() => {
+                this._model.setDragging(0.0, 0.0);
+            }, duration);
+        }
+    }
+
+    /*
+    * 恢复角度
+    */
+    public reSetAngle(): void { 
+        this._model.setDragging(0.0, 0.0);
     }
 
 
