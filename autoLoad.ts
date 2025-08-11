@@ -71,6 +71,21 @@ const getAllExpressionsInfo = async () => {
   return live2dControl.getAllExpressionsInfo();
 };
 
+const getDefine = async () => {
+  await hadloaded();
+  return Define;
+};
+
+const getMotion = async () => {
+  await hadloaded();
+  return Motions;
+};
+
+const getExpression = async () => {
+  await hadloaded();
+  return Expressions;
+};
+
 const playMotion = async (group: string, no: number, priority: number) => {
   await hadloaded();
   live2dControl.playMotion(group, no, priority);
@@ -99,6 +114,11 @@ const setMessage = async (message: string, duration: number = null) => {
 const hideMessageBox = async () => {
   await hadloaded();
   live2dControl.hideMessageBox();
+};
+
+const setLipSync = async (vlaue: number) => {
+  await hadloaded();
+  live2dControl.setLipSync(vlaue);
 };
 
 const stop = async () => {
@@ -196,15 +216,16 @@ export {
   removePointClickEvent,
   getAllMotionsInfo,
   getAllExpressionsInfo,
+  getDefine,
+  getMotion,
+  getExpression,
   playMotion,
   playExpression,
   reSetDefaultExpression,
   setAngle,
   setMessage,
   hideMessageBox,
+  setLipSync,
   stop,
-  Define,
-  Motions,
-  Expressions
 };
 

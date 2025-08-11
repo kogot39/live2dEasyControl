@@ -315,4 +315,18 @@ export class Live2dControl {
             }, duration);
         }
     }
+
+    /**
+     * 控制眼睛
+     */
+
+
+    /**
+     * 控制嘴巴大小
+     * @param vlaue 推荐值0.0-0.5
+     * @param weight 默认0.8
+     */
+    public setLipSync(vlaue: number, weight?: number): void {
+        this._model.setLipSync(vlaue, weight);
+    }
 }

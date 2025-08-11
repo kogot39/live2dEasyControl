@@ -94,6 +94,10 @@ export class Model extends CubismUserModel {
     _idParamEyeBallY: CubismIdHandle; // 参数ID: ParamEyeBallY
     _idParamBodyAngleX: CubismIdHandle; // 参数ID: ParamBodyAngleX
 
+    _idParamMouthOpenY: CubismIdHandle; // 参数ID: ParamMouthOpenY
+    _MouthOpenValue: number; // 嘴巴打开度
+    _MouthOpenWeight: number; // 嘴巴打开度权重
+
     _state: LoadStep; // 当前状态
     _expressionCount: number; // 表情数据计数
     _textureCount: number; // 纹理计数
@@ -140,6 +144,10 @@ export class Model extends CubismUserModel {
         this._idParamBodyAngleX = CubismFramework.getIdManager().getId(
             CubismDefaultParameterId.ParamBodyAngleX
         );
+        this._idParamMouthOpenY = CubismFramework.getIdManager().getId(
+            CubismDefaultParameterId.ParamMouthOpenY
+        );
+
 
         if (Define.MOCConsistencyValidationEnable) {
             this._mocConsistency = true;
@@ -154,6 +162,8 @@ export class Model extends CubismUserModel {
         this._textureCount = 0;
         this._motionCount = 0;
         this._allMotionCount = 0;
+        this._MouthOpenValue = 0.0;
+        this._MouthOpenWeight = 0.8; // 默认为0.8
         this._consistency = false;
         // 加载模型
         this.loadAssets();
@@ -178,42 +188,42 @@ export class Model extends CubismUserModel {
     }
 
     public getLoadState(): boolean {
-        if(this._state == LoadStep.CompleteSetup) return true;
+        if (this._state == LoadStep.CompleteSetup) return true;
         return false;
     }
 
-    public getAllMotions(): {group:string,names:string[]}[] | null {
+    public getAllMotions(): { group: string, names: string[] }[] | null {
 
-        if(this._state != LoadStep.CompleteSetup || !this._modelSetting) {
+        if (this._state != LoadStep.CompleteSetup || !this._modelSetting) {
             return null; // 模型未加载完成，返回null
         }
 
-        const motionsNames: {group:string,names:string[]}[] = [];
+        const motionsNames: { group: string, names: string[] }[] = [];
 
         const groupCount = this._modelSetting.getMotionGroupCount();
         const reg = /.*\//g;
-        for(let i: number = 0; i < groupCount; i++) {
+        for (let i: number = 0; i < groupCount; i++) {
             const groupName = this._modelSetting.getMotionGroupName(i);
             const motionCount = this._modelSetting.getMotionCount(groupName);
             const Names: string[] = [];
-            for(let j: number = 0; j < motionCount; j++) {
+            for (let j: number = 0; j < motionCount; j++) {
                 // 剪切掉'.*/'和'.motion3.json'
-                Names.push(this._modelSetting.getMotionFileName(groupName, j).replace('.motion3.json','').replace(reg,''));
+                Names.push(this._modelSetting.getMotionFileName(groupName, j).replace('.motion3.json', '').replace(reg, ''));
             }
-            motionsNames.push({group:groupName,names:Names});
+            motionsNames.push({ group: groupName, names: Names });
         }
 
         return motionsNames;
     }
 
     public getAllExpressions(): string[] | null {
-        if(this._state != LoadStep.CompleteSetup|| !this._modelSetting) {
+        if (this._state != LoadStep.CompleteSetup || !this._modelSetting) {
             return null; // 模型未加载完成，返回null
         }
 
         const count: number = this._modelSetting.getExpressionCount();
         const expsNames: string[] = [];
-        for(let i: number = 0; i < count; i++) {
+        for (let i: number = 0; i < count; i++) {
             expsNames.push(this._modelSetting.getExpressionName(i)); // 获取表情名称
         }
 
@@ -654,8 +664,12 @@ export class Model extends CubismUserModel {
         this._model.loadParameters(); // 加载前一次保存的状态
         if (this._motionManager.isFinished()) {
             // 没有正在播放的运动时，进行默认闲置动作
-            if(Define.motionNames.default.group) 
-                this.startMotion(Define.motionNames.default.group,Define.motionNames.default.no,Define.priorityIdle);
+            if (Define.motionNames.default.group)
+                this.startMotion(
+                    Define.motionNames.default.group,
+                    Define.motionNames.default.no,
+                    Define.priorityIdle
+                );
             // 未设置默认动作则会保持当前动作
         } else {
             motionUpdated = this._motionManager.updateMotion(
@@ -678,7 +692,7 @@ export class Model extends CubismUserModel {
             this._expressionManager.updateMotion(this._model, deltaTimeSeconds); // 表情更新
         }
 
-        // 默认面部和身体跟随鼠标移动
+        // 默认面部和身体跟随鼠标移动 没有绑定时参数都为0
         // 鼠标移动导致的变化
         // 鼠标移动的面部朝向调整
         this._model.addParameterValueById(this._idParamAngleX, this._dragX * 30); // 加-30到30的值
@@ -706,6 +720,11 @@ export class Model extends CubismUserModel {
         // 物理演算的设置
         if (this._physics != null) {
             this._physics.evaluate(this._model, deltaTimeSeconds);
+        }
+
+        if (this._lipsync) { // 确定开启控制嘴唇
+            if (!this._lipSyncIds.getSize()) return; // 确定是否可以控制 原模型支持但配置文件内没有则需要手动添加
+                this._model.addParameterValueById(this._idParamMouthOpenY, this._MouthOpenValue, this._MouthOpenWeight);
         }
 
         // pose的设置
@@ -972,6 +991,20 @@ export class Model extends CubismUserModel {
                 });
         }
     }
+
+
+    /**
+     * 控制嘴巴大小
+     * 
+     * @param vlaue 0-1
+     * @param weight 0.8
+     */
+    public setLipSync(vlaue: number, weight?: number): void {
+        this._MouthOpenValue = vlaue;
+        if(weight) this._MouthOpenWeight = weight;
+    }
+
+    
 
     /**
      * 绘制模型。
