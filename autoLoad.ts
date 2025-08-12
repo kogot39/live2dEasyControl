@@ -136,7 +136,7 @@ const stop = async () => {
   live2dRender.stop();
 };
 
-const test = (): void => {
+// const test = (): void => {
   // // 初始化Cubism SDK
   // const cubismOption = new Option();
   // cubismOption.logFunction = Utils.printMessage;
@@ -179,7 +179,7 @@ const test = (): void => {
   // live2dControl.setLipSync(0.4)
 
   // live2dRender.stop()
-};
+// };
 
 const load = async (configPath: string | Object): Promise<void> => {
   // 加入Cubism Code
@@ -208,8 +208,6 @@ const load = async (configPath: string | Object): Promise<void> => {
 
   // 完成加载
   isloading = false;
-
-  // test()
 
   // 页面加载完成后开始渲染Live2D模型
   // window.addEventListener(

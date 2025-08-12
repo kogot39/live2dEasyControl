@@ -4,7 +4,7 @@ export let Define = defaultConfig;
 export let Motions = {};
 export let Expressions = {};
 
-export const loadConfigFromFile = async (configPath?: string | Object): Promise<void> => {
+export const loadConfigFromFile = async (configPath: string | Object): Promise<void> => {
   try {
     let userConfig;
     if (typeof configPath === 'string') {

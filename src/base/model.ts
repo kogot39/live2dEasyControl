@@ -723,7 +723,7 @@ export class Model extends CubismUserModel {
         }
 
         if (this._lipsync) { // 确定开启控制嘴唇
-            if (!this._lipSyncIds.getSize()) return; // 确定是否可以控制 原模型支持但配置文件内没有则需要手动添加
+            if (this._lipSyncIds.getSize()) // 确定是否可以控制 原模型支持但配置文件内没有则需要手动添加
                 this._model.addParameterValueById(this._idParamMouthOpenY, this._MouthOpenValue, this._MouthOpenWeight);
         }
 
