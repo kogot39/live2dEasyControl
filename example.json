@@ -2,7 +2,7 @@
     "canvasWidth": "15vw",
     "canvasHeight": "40vw",
     "canvasPosition": "right",
-    "modelDir": "whitecat",
+    "modelDir": "冷冷小人",
     "resourcesPath": "/Resources/",
     "motionGroupIdle": "Idle",
     "motionGroupTapBody": "TapBody",

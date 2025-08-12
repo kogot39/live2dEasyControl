@@ -206,13 +206,11 @@ export class Live2dControl {
     }
 
     /**
-     * 恢复默认表情
+     * 停止表情
      */
-    public reSetDefaultExpression(): void {
-        if (Define.expressionNames.default)
-            this.playExpression(Define.expressionNames.default);
-        else
-            Utils.printMessage('[APP]未设置默认表情');
+    public stopExpression(): void {
+        if(Define.expressionNames.default != '') this.playExpression(Define.expressionNames.default);
+        this._model.stopAllExpressions();
     }
 
     /**

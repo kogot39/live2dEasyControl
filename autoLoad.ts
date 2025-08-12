@@ -96,9 +96,9 @@ const playExpression = async (name: string) => {
   live2dControl.playExpression(name);
 };
 
-const reSetDefaultExpression = async () => {
+const stopExpression = async () => {
   await hadloaded();
-  live2dControl.reSetDefaultExpression();
+  live2dControl.stopExpression();
 };
 
 const setAngle = async (e: MouseEvent, duration: number = null) => {
@@ -175,6 +175,9 @@ const stop = async () => {
 
   // live2dControl.setPointClickEvent()
   // live2dControl.removePointClickEvent()
+  // setTimeout(() => {
+  //   live2dControl.stopExpression()
+  // }, 10000)
 
   // live2dControl.setLipSync(0.4)
 
@@ -208,6 +211,8 @@ const load = async (configPath: string | Object): Promise<void> => {
 
   // 完成加载
   isloading = false;
+
+  // test();
 
   // 页面加载完成后开始渲染Live2D模型
   // window.addEventListener(
@@ -245,7 +250,7 @@ export {
   getExpression,
   playMotion,
   playExpression,
-  reSetDefaultExpression,
+  stopExpression,
   setAngle,
   setAngleXY,
   reSetAngle,

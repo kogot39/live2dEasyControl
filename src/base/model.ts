@@ -885,6 +885,15 @@ export class Model extends CubismUserModel {
     }
 
     /**
+     * 停止所有表情
+     */
+    public stopAllExpressions(): void {
+        if (this._expressionManager != null) {
+            this._expressionManager.stopAllMotions(); // 停止表情
+        }
+    }
+
+    /**
      * 接收事件的触发
      */
     public motionEventFired(eventValue: csmString): void {
